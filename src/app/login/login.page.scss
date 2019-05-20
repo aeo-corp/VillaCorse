@@ -56,6 +56,10 @@ button.ghost {
 	border-color: #FFFFFF;
 }
 
+button:disabled {
+	opacity: 0.5;
+}
+
 form {
 	background-color: #FFFFFF;
 	display: flex;
