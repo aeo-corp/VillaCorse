@@ -9,8 +9,8 @@ export class DataService {
 
 	headers: Headers;
 
-	baseURL = 'http://localhost:3000/api/v1';
-	// baseURL = 'https://prod-run-logger-api-v1.herokuapp.com/api/v1/';
+	// baseURL = 'http://localhost:3000/api/v1';
+	baseURL = 'https://prod-run-logger-api-v1.herokuapp.com/api/v1/';
 
   constructor (private http: Http) {
 		this.setHeaders();
