@@ -36,33 +36,33 @@ export class ProfilePage implements OnInit {
 	weights = [{
 		id: null,
 		date: "11 Décembre 2019",
-		weight: "56",
-		diff: "12"
+		weight: 56,
+		diff: 12
 	},{
 		id: null,
 		date: "21 Décembre 2019",
-		weight: "63",
-		diff: "23"
+		weight: 63,
+		diff: 23
 	},{
 		id: null,
 		date: "31 Décembre 2019",
-		weight: "65",
-		diff: "1"
+		weight: 65,
+		diff: 1
 	},{
 		id: null,
 		date: "41 Décembre 2019",
-		weight: "75",
-		diff: "5"
+		weight: 75,
+		diff: 5
 	},{
 		id: null,
 		date: "51 Décembre 2019",
-		weight: "79",
-		diff: "9"
+		weight: 79,
+		diff: 9
 	},{
 		id: null,
 		date: "61 Décembre 2019",
-		weight: "73",
-		diff: "34"
+		weight: 73,
+		diff: 34
 	}
 ]
 
@@ -85,6 +85,9 @@ export class ProfilePage implements OnInit {
 		setTimeout(() => {
 			this.allWeightChecked();
 			this.selectAllWeight();
+			$('[id^=weight]').keyup((element) => {
+				this.changeWeight(element.currentTarget);
+			});
 		}, 10)
 		this.setNewDate();
   }
@@ -148,6 +151,9 @@ export class ProfilePage implements OnInit {
 		this.weights.splice(0, 0, {id: null, date: this.date, weight: null, diff: null})
 		setTimeout(() => {
 			this.allWeightChecked();
+			$('#weight0').keyup((element) => {
+				this.changeWeight(element.currentTarget);
+			});
 			$("#mainCheckbox").prop('checked', false);
 		}, 10)
 	}
@@ -172,14 +178,24 @@ export class ProfilePage implements OnInit {
 	}
 
 	removeWeight() {
-		let remove = 0;
 		$('[id^=checkbox]:checked').each(( index, element ) => {
 			let nbr = element.id.substring("checkbox".length);
 			$("#checkbox" + nbr).prop('checked', false);
-			this.weights.splice(Number(nbr) - remove, 1);
-			remove++;
+			this.weights.splice(Number(nbr) - index, 1);
 			$("#mainCheckbox").prop('checked', false);
 		});
+	}
+
+	changeWeight(element) {
+		let nbr = element.id.substring("weight".length);
+		if (nbr != this.weights.length - 1) {
+			this.weights[nbr].diff = this.weights[nbr].weight - this.weights[Number(nbr) + 1].weight;
+			if (nbr != 0)
+				this.weights[Number(nbr) - 1].diff = this.weights[Number(nbr) - 1].weight - this.weights[nbr].weight;
+		} else {
+			this.weights[nbr].diff = 0;
+			this.weights[Number(nbr) - 1].diff = this.weights[Number(nbr) - 1].weight - this.weights[nbr].weight;
+		}
 	}
 
 }

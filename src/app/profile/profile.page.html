@@ -37,7 +37,7 @@
 						<p>Informations Personnelles</p>
 						<form action="#" #profileForm="ngForm">
 							<input type="text" placeholder="Prénom" [(ngModel)]="user.name" name="name">
-							<input type="text" placeholder="Taille (en cm)" [(ngModel)]="user.size" name="size">
+							<input type="text" placeholder="Taille(cm)" [(ngModel)]="user.size" name="size">
 							<input type="email" placeholder="Email" [(ngModel)]="user.email" name="email">
 							<input type="password" placeholder="Mot de passe" [(ngModel)]="password" name="password">
 							<input type="password" placeholder="Confirmation du mot de passe" [(ngModel)]="password_confirmation" name="password_confirmation">
@@ -59,21 +59,23 @@
 							</ion-col>
 						</ion-row>
 
-						<table>
-							<tr>
-								<th><input type="checkbox" id="mainCheckbox" (click)="selectAllWeight()" /></th>
-								<th>Date</th>
-								<th>Poids(kg)</th>
-								<th>Différence(kg)</th>
-							</tr>
-							<br />
-							<tr *ngFor="let data of weights; let i = index">
-								<th><input type="checkbox" id="{{'checkbox' + i}}" (click)="allWeightChecked()"/></th>
-								<th><input type="text" placeholder="date" [(ngModel)]="data.date"/></th>
-								<th><input type="text" placeholder="poids" [(ngModel)]="data.weight"/></th>
-								<th><input type="text" placeholder="différence" [(ngModel)]="data.diff"/></th>
-							</tr>
-						</table>
+						<ion-card-content>
+							<table>
+								<tr>
+									<th><input type="checkbox" id="mainCheckbox" /></th>
+									<th>Date</th>
+									<th>Poids(kg.*)</th>
+									<th>Différence(kg.*)</th>
+								</tr>
+								<br />
+								<tr *ngFor="let data of weights; let i = index">
+									<th><input type="checkbox" id="{{'checkbox' + i}}" /></th>
+									<th><input type="text" placeholder="date" [(ngModel)]="data.date"/></th>
+									<th><input type="number" id="{{'weight' + i}}" placeholder="poids" [(ngModel)]="data.weight" step="0.01"/></th>
+									<th><input type="number" id="{{'diff' + i}}" placeholder="différence" [(ngModel)]="data.diff" step="0.01" disabled/></th>
+								</tr>
+							</table>
+						</ion-card-content>
 
 					</ion-card>
 				</ion-col>
