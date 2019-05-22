@@ -12,8 +12,8 @@ import { AuthService } from '../../services/auth.service';
 export class LoginPage implements OnInit {
 
 	name: string = "";
-	email: string = "axel.vandenabeele@gmail.com";
-	password: string = "password";
+	email: string = "";
+	password: string = "";
 	password_confirmation: string = "";
 
   constructor(private router: Router, private auth: AuthService, private data: DataService) {}
