@@ -35,6 +35,7 @@ export class LoginPage implements OnInit {
 		this.auth.createAccount({email: this.email, name: this.name, password: this.password, password_confirmation: this.password_confirmation})
 							.subscribe(
 								success => {
+									this.login();
 								},
 								error => {
 									console.log(error);
