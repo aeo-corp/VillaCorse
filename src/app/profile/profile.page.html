@@ -10,7 +10,76 @@
 	</div>
 
 	<div class="content">
+		<ion-grid style="height: 100%">
 
+			<ion-card>
+				<p>Vos Succès</p>
+				<div class="medal-container">
+					<ul>
+						<li *ngFor="let medal of medals">
+							<ion-card size="2">
+								<ion-card-header>
+									{{medal.picture}}
+								</ion-card-header>
+								<ion-card-content>
+									{{medal.achievment}}
+								</ion-card-content>
+							</ion-card>
+						</li>
+					</ul>
+				</div>
+			</ion-card>
+
+			<ion-row>
+
+				<ion-col size-xs="12" size-md="6" size-lg="4">
+					<ion-card>
+						<p>Informations Personnelles</p>
+						<form action="#" #profileForm="ngForm">
+							<input type="text" placeholder="Prénom" [(ngModel)]="user.name" name="name">
+							<input type="text" placeholder="Taille (en cm)" [(ngModel)]="user.size" name="size">
+							<input type="email" placeholder="Email" [(ngModel)]="user.email" name="email">
+							<input type="password" placeholder="Mot de passe" [(ngModel)]="password" name="password">
+							<input type="password" placeholder="Confirmation du mot de passe" [(ngModel)]="password_confirmation" name="password_confirmation">
+							<button (click)="submitUser()" [disabled]="!validCredentials()">Valider</button>
+						</form>
+					</ion-card>
+				</ion-col>
+
+				<ion-col size-xs="12" size-md="6" size-lg="8">
+					<ion-card>
+
+						<ion-row>
+							<ion-col size="8">
+								<p>Historique poids</p>
+							</ion-col>
+							<ion-col size="4">
+								<button *ngIf="weightChecked()" (click)="removeWeight()" class="array-button"><ion-icon name="md-trash"></ion-icon></button>
+								<button (click)="addWeight()" class="array-button"><ion-icon name="md-add"></ion-icon></button>
+							</ion-col>
+						</ion-row>
+
+						<table>
+							<tr>
+								<th><input type="checkbox" id="mainCheckbox" (click)="selectAllWeight()" /></th>
+								<th>Date</th>
+								<th>Poids(kg)</th>
+								<th>Différence(kg)</th>
+							</tr>
+							<br />
+							<tr *ngFor="let data of weights; let i = index">
+								<th><input type="checkbox" id="{{'checkbox' + i}}" (click)="allWeightChecked()"/></th>
+								<th><input type="text" placeholder="date" [(ngModel)]="data.date"/></th>
+								<th><input type="text" placeholder="poids" [(ngModel)]="data.weight"/></th>
+								<th><input type="text" placeholder="différence" [(ngModel)]="data.diff"/></th>
+							</tr>
+						</table>
+
+					</ion-card>
+				</ion-col>
+			</ion-row>
+
+		</ion-grid>
 	</div>
 
 </ion-content>

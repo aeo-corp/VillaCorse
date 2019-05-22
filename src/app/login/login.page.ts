@@ -10,10 +10,10 @@ import { AuthService } from '../../services/auth.service';
 })
 export class LoginPage implements OnInit {
 
-	name: string = "Axel";
-	email: string = "axel.vandenabeele@gmail.com";
-	password: string = "password";
-	password_confirmation: string = "password";
+	name: string = "";
+	email: string = "";
+	password: string = "";
+	password_confirmation: string = "";
 
   constructor(private router: Router, private auth: AuthService) {}
 
@@ -35,7 +35,6 @@ export class LoginPage implements OnInit {
 		this.auth.createAccount({email: this.email, name: this.name, password: this.password, password_confirmation: this.password_confirmation})
 							.subscribe(
 								success => {
-									console.log(success);
 								},
 								error => {
 									console.log(error);
@@ -47,7 +46,6 @@ export class LoginPage implements OnInit {
 		this.auth.login(this.email, this.password)
 					.subscribe(
 						success => {
-							console.log(success);
 							this.router.navigateByUrl('/home');
 						},
 						error => {
