@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { DataService } from '../../services/data.service';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -11,11 +12,11 @@ import { AuthService } from '../../services/auth.service';
 export class LoginPage implements OnInit {
 
 	name: string = "";
-	email: string = "";
-	password: string = "";
+	email: string = "axel.vandenabeele@gmail.com";
+	password: string = "password";
 	password_confirmation: string = "";
 
-  constructor(private router: Router, private auth: AuthService) {}
+  constructor(private router: Router, private auth: AuthService, private data: DataService) {}
 
   ngOnInit() {
 		const signUpButton = document.getElementById('signUp');
@@ -47,6 +48,14 @@ export class LoginPage implements OnInit {
 		this.auth.login(this.email, this.password)
 					.subscribe(
 						success => {
+							localStorage.setItem('access_token', success.headers.get('access-token'));
+							localStorage.setItem('client', success.headers.get('client'));
+							localStorage.setItem('uid', success.headers.get('uid'));
+							localStorage.setItem('expiry', success.headers.get('expiry'));
+							localStorage.setItem('token-type', success.headers.get('token-type'));
+							localStorage.setItem('user_id', success.body.data.id);
+							this.auth.setHeaders();
+							this.data.setHeaders();
 							this.router.navigateByUrl('/home');
 						},
 						error => {
