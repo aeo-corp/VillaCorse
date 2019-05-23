@@ -5,6 +5,8 @@ import * as $ from 'jquery';
 
 import { Chart } from 'chart.js';
 
+import { DataService } from '../../services/data.service';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
@@ -12,16 +14,22 @@ import { Chart } from 'chart.js';
 })
 export class HomePage implements OnInit {
 
+	weights = [];
+
+	date = [];
+	weight = [];
+	color = [];
+
 	monthNames = [ "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Decembre" ];
 	dayNames= [ "Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi" ];
 	newDate = new Date();
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private data: DataService) {
 	}
 
   ngOnInit() {
 		this.setCalendar();
-		this.setChart();
+		this.getWeights();
   }
 
 	account() {
@@ -45,32 +53,44 @@ export class HomePage implements OnInit {
 		}, 100);
 	}
 
+	getWeights() {
+		this.data.getWeights()
+							.subscribe(
+								success => {
+									this.weights = success.body;
+									this.setArrays();
+									this.setChart();
+								},
+								error => {
+									console.log(error);
+								}
+							)
+	}
+
+	setArrays() {
+		this.date = new Array();
+		this.weight = new Array();
+		for (let i = 0; i < this.weights.length; i++) {
+			this.date.push(this.weights[i].date)
+			this.weight.push(this.weights[i].value)
+			if (i != 0 && this.weights[i].value > this.weights[i - 1].value)
+				this.color.push('rgba(255, 99, 132, 1)')
+			else
+				this.color.push('rgba(75, 192, 192, 1)')
+		}
+	}
+
 	setChart() {
 		var canvas = <HTMLCanvasElement> document.getElementById("myChart");
 		var ctx = canvas.getContext("2d");
 		var myChart = new Chart(ctx, {
-				type: 'bar',
+				type: 'line',
 				data: {
-						labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+						labels: this.date,
 						datasets: [{
-								label: '# of Votes',
-								data: [12, 19, 3, 5, 2, 3],
-								backgroundColor: [
-										'rgba(255, 99, 132, 0.2)',
-										'rgba(54, 162, 235, 0.2)',
-										'rgba(255, 206, 86, 0.2)',
-										'rgba(75, 192, 192, 0.2)',
-										'rgba(153, 102, 255, 0.2)',
-										'rgba(255, 159, 64, 0.2)'
-								],
-								borderColor: [
-										'rgba(255, 99, 132, 1)',
-										'rgba(54, 162, 235, 1)',
-										'rgba(255, 206, 86, 1)',
-										'rgba(75, 192, 192, 1)',
-										'rgba(153, 102, 255, 1)',
-										'rgba(255, 159, 64, 1)'
-								],
+								label: 'poids(kg)',
+								data: this.weight,
+								borderColor: this.color,
 								borderWidth: 1
 						}]
 				},

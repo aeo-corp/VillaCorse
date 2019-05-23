@@ -37,7 +37,10 @@
               },
               {
                 "input": "src/global.scss"
-              }
+              },
+							{
+								"input": "node_modules/flatpickr/dist/flatpickr.min.css"
+							}
             ],
             "scripts": [],
             "es5BrowserSupport": true

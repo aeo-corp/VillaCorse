@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { DatePipe } from '@angular/common';
 
 import * as $ from 'jquery';
+
+import { FlatpickrOptions } from 'ng2-flatpickr';
+import flatpickr from 'flatpickr';
+import { French } from 'flatpickr/dist/l10n/fr';
 
 import { DataService } from '../../services/data.service';
 import { AuthService } from '../../services/auth.service';
@@ -9,6 +14,7 @@ import { AuthService } from '../../services/auth.service';
   selector: 'app-profile',
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
+	providers: [DatePipe]
 })
 export class ProfilePage implements OnInit {
 
@@ -33,69 +39,38 @@ export class ProfilePage implements OnInit {
 	}
 ]
 
-	weights = [{
-		id: null,
-		date: "11 Décembre 2019",
-		weight: 56,
-		diff: 12
-	},{
-		id: null,
-		date: "21 Décembre 2019",
-		weight: 63,
-		diff: 23
-	},{
-		id: null,
-		date: "31 Décembre 2019",
-		weight: 65,
-		diff: 1
-	},{
-		id: null,
-		date: "41 Décembre 2019",
-		weight: 75,
-		diff: 5
-	},{
-		id: null,
-		date: "51 Décembre 2019",
-		weight: 79,
-		diff: 9
-	},{
-		id: null,
-		date: "61 Décembre 2019",
-		weight: 73,
-		diff: 34
-	}
-]
+	weights = []
+	removedWeights = [];
+	weightUpdate: boolean = false;
 
 	user = {
 		size: null,
 		name: "",
 		email: ""
 	}
+	userUpdate: boolean = false;
 
 	password: string = "";
 	password_confirmation: string = "";
 
-	monthNames = [ "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Decembre" ];
-	date: string;
+	date: any = this.datePipe.transform(new Date, 'dd-MM-yyyy');
 
-  constructor(private data: DataService, private auth: AuthService) { }
+	exampleOptions: FlatpickrOptions = {
+		dateFormat: "d-m-Y",
+		maxDate: "today",
+		weekNumbers: true
+	};
+
+  constructor(private datePipe: DatePipe,
+							private data: DataService,
+							private auth: AuthService) { }
 
   ngOnInit() {
 		this.getMe();
-		setTimeout(() => {
-			this.allWeightChecked();
-			this.selectAllWeight();
-			$('[id^=weight]').keyup((element) => {
-				this.changeWeight(element.currentTarget);
-			});
-		}, 10)
-		this.setNewDate();
+		this.getWeights();
+		flatpickr.localize(French)
+		this.removedWeights = new Array();
   }
-
-	setNewDate() {
-		let newDate = new Date()
-		this.date = newDate.getDate() + " " + this.monthNames[newDate.getMonth()] + " " + String(newDate.getFullYear());
-	}
 
 	getMe() {
 		this.data.getMe()
@@ -110,12 +85,14 @@ export class ProfilePage implements OnInit {
 	}
 
 	submitUser() {
+		this.userUpdate = true;
 		if (this.password.trim().length != 0)
 			this.setPassword();
 
 		this.data.putMe(this.user)
 							.subscribe(
 								success => {
+									this.userUpdate = false;
 								},
 								error => {
 									console.log(error)
@@ -147,10 +124,66 @@ export class ProfilePage implements OnInit {
 		return true;
 	}
 
-	addWeight() {
-		this.weights.splice(0, 0, {id: null, date: this.date, weight: null, diff: null})
+	setCalendar() {
 		setTimeout(() => {
-			this.allWeightChecked();
+			$('[id^=calendar]').each((index, element) => {
+				(<HTMLElement>document.getElementById("calendar" + index).children[0].children[0]).style.opacity = "0";
+				(<HTMLElement>document.getElementById("calendar" + index).children[0].children[0]).style.width = "1px";
+				document.getElementById("calendar" + index).children[0].children[0].id = "input-calendar" + index;
+				$("#container-calendar" + index).click(function () {
+					(<HTMLElement>document.getElementById("calendar" + index).children[0].children[0]).focus();
+				})
+				$("#input-calendar" + index).change((element) => {
+					if (this.weights[index])
+						this.weights[index].date = (<HTMLInputElement>element.currentTarget).value;
+				})
+			})
+		}, 10)
+	}
+
+	resetCalendar() {
+		setTimeout(() => {
+			$('[id^=calendar]').each((index, element) => {
+				$("#container-calendar" + index).unbind('click')
+				$("#input-calendar" + index).unbind('change')
+			})
+			this.setCalendar();
+		}, 10)
+	}
+
+	getWeights() {
+		this.data.getWeights()
+							.subscribe(
+								success => {
+									this.weights = success.body;
+									this.setCalendar();
+									setTimeout(() => {
+										$('#mainCheckbox').click(function() {
+											$("input:checkbox").prop('checked', $(this).prop("checked"));
+										});
+										$('[id^=checkbox]').click(() => {
+											this.allWeightChecked();
+										});
+										$('[id^=weight]').keyup((element) => {
+											this.changeWeight(element.currentTarget);
+										});
+									}, 10)
+								},
+								error => {
+									console.log(error);
+								}
+							)
+	}
+
+	addWeight() {
+		this.weights.splice(0, 0, {id: null, date: this.date, value: null, diff: null})
+		setTimeout(() => {
+			this.resetCalendar();
+			(<HTMLElement>document.getElementById("calendar0").children[0].children[0]).style.opacity = "0";
+			(<HTMLElement>document.getElementById("calendar0").children[0].children[0]).style.width = "1px";
+			$('#checkbox0').click(() => {
+				this.allWeightChecked();
+			});
 			$('#weight0').keyup((element) => {
 				this.changeWeight(element.currentTarget);
 			});
@@ -158,29 +191,23 @@ export class ProfilePage implements OnInit {
 		}, 10)
 	}
 
-	selectAllWeight() {
-		$('#mainCheckbox').click(function() {
- 			$("input:checkbox").prop('checked', $(this).prop("checked"));
-		});
-	}
-
 	weightChecked() {
 		return ($('input:checkbox:checked').length > 0)
 	}
 
 	allWeightChecked() {
-		$('[id^=checkbox]').click(() => {
-			if ($('[id^=checkbox]:checked').length == this.weights.length)
-				$("#mainCheckbox").prop('checked', true);
-			else
-				$("#mainCheckbox").prop('checked', false);
-		});
+		if ($('[id^=checkbox]:checked').length == this.weights.length)
+			$("#mainCheckbox").prop('checked', true);
+		else
+			$("#mainCheckbox").prop('checked', false);
 	}
 
 	removeWeight() {
+		this.resetCalendar();
 		$('[id^=checkbox]:checked').each(( index, element ) => {
 			let nbr = element.id.substring("checkbox".length);
 			$("#checkbox" + nbr).prop('checked', false);
+			this.removedWeights.push(this.weights[Number(nbr) - index]);
 			this.weights.splice(Number(nbr) - index, 1);
 			$("#mainCheckbox").prop('checked', false);
 		});
@@ -189,13 +216,66 @@ export class ProfilePage implements OnInit {
 	changeWeight(element) {
 		let nbr = element.id.substring("weight".length);
 		if (nbr != this.weights.length - 1) {
-			this.weights[nbr].diff = this.weights[nbr].weight - this.weights[Number(nbr) + 1].weight;
+			this.weights[nbr].diff = this.weights[nbr].value - this.weights[Number(nbr) + 1].value;
 			if (nbr != 0)
-				this.weights[Number(nbr) - 1].diff = this.weights[Number(nbr) - 1].weight - this.weights[nbr].weight;
+				this.weights[Number(nbr) - 1].diff = this.weights[Number(nbr) - 1].value - this.weights[nbr].value;
 		} else {
 			this.weights[nbr].diff = 0;
-			this.weights[Number(nbr) - 1].diff = this.weights[Number(nbr) - 1].weight - this.weights[nbr].weight;
+			this.weights[Number(nbr) - 1].diff = this.weights[Number(nbr) - 1].value - this.weights[nbr].value;
 		}
+	}
+
+	saveWeights() {
+		this.weightUpdate = true;
+		for (let data of this.weights) {
+			if (data.id) {
+				this.putWeights(data);
+			} else {
+				this.postWeights(data);
+			}
+		}
+		for (let data of this.removedWeights) {
+			if (data.id) {
+				this.deleteWeights(data.id);
+			}
+		}
+		this.weightUpdate = false;
+	}
+
+	postWeights(data) {
+		this.data.postWeight(data)
+							.subscribe(
+								success => {
+									console.log(success.body)
+								},
+								error => {
+									console.log(error);
+								}
+							)
+	}
+
+	putWeights(data) {
+		this.data.putWeight(data)
+							.subscribe(
+								success => {
+									console.log(success.body)
+								},
+								error => {
+									console.log(error);
+								}
+							)
+	}
+
+	deleteWeights(id) {
+		this.data.deleteWeight(id)
+							.subscribe(
+								success => {
+									console.log(success.body)
+								},
+								error => {
+									console.log(error);
+								}
+							)
 	}
 
 }

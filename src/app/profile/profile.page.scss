@@ -21,6 +21,11 @@
 	overflow-x: scroll;
 }
 
+.center {
+	display: flex;
+	justify-content: center;
+}
+
 ul {
 	display: inline-flex;
 	text-decoration: none;
@@ -135,5 +140,20 @@ th input {
 }
 
 input[type=number] {
-    -moz-appearance: textfield;
+  -moz-appearance: textfield;
 }
+
+.custom-calendar {
+	position: absolute;
+	opacity: 1;
+}
+
+.custom {
+	width: 10px;
+}
+
+.flex {
+	display: flex;
+}
+
+@import '../../../node_modules/flatpickr/dist/flatpickr.min.css';

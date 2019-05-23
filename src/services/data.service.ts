@@ -29,6 +29,8 @@ export class DataService {
 		);
 	}
 
+	/* profile */
+
 	getMe() {
 		let options = new RequestOptions({ headers: this.headers });
 		return this.http.get(this.baseURL + '/me', options)
@@ -40,6 +42,38 @@ export class DataService {
 		let body = JSON.stringify({ user: me })
 		let options = new RequestOptions({ headers: this.headers });
 		return this.http.put(this.baseURL + '/me', body, options)
+		.map(this.extractData)
+		.catch(this.handleError);
+	}
+
+	/* weights */
+
+	getWeights() {
+		let options = new RequestOptions({ headers: this.headers });
+		return this.http.get(this.baseURL + '/weights', options)
+		.map(this.extractData)
+		.catch(this.handleError);
+	}
+
+	postWeight(weight) {
+		let body = JSON.stringify({ weight: weight })
+		let options = new RequestOptions({ headers: this.headers });
+		return this.http.post(this.baseURL + '/weights', body, options)
+		.map(this.extractData)
+		.catch(this.handleError);
+	}
+
+	putWeight(weight) {
+		let body = JSON.stringify({ weight: weight })
+		let options = new RequestOptions({ headers: this.headers });
+		return this.http.put(this.baseURL + '/weights/' + weight.id, body, options)
+		.map(this.extractData)
+		.catch(this.handleError);
+	}
+
+	deleteWeight(id) {
+		let options = new RequestOptions({ headers: this.headers });
+		return this.http.delete(this.baseURL + '/weights/' + id, options)
 		.map(this.extractData)
 		.catch(this.handleError);
 	}

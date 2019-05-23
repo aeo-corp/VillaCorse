@@ -41,7 +41,7 @@
 							<input type="email" placeholder="Email" [(ngModel)]="user.email" name="email">
 							<input type="password" placeholder="Mot de passe" [(ngModel)]="password" name="password">
 							<input type="password" placeholder="Confirmation du mot de passe" [(ngModel)]="password_confirmation" name="password_confirmation">
-							<button (click)="submitUser()" [disabled]="!validCredentials()">Valider</button>
+							<button (click)="submitUser()" [disabled]="!validCredentials() || userUpdate">Valider</button>
 						</form>
 					</ion-card>
 				</ion-col>
@@ -54,8 +54,8 @@
 								<p>Historique poids</p>
 							</ion-col>
 							<ion-col size="4">
-								<button *ngIf="weightChecked()" (click)="removeWeight()" class="array-button"><ion-icon name="md-trash"></ion-icon></button>
-								<button (click)="addWeight()" class="array-button"><ion-icon name="md-add"></ion-icon></button>
+								<button [disabled]="weightUpdate" *ngIf="weightChecked()" (click)="removeWeight()" class="array-button"><ion-icon name="md-trash"></ion-icon></button>
+								<button [disabled]="weightUpdate" (click)="addWeight()" class="array-button"><ion-icon name="md-add"></ion-icon></button>
 							</ion-col>
 						</ion-row>
 
@@ -69,16 +69,25 @@
 								</tr>
 								<br />
 								<tr *ngFor="let data of weights; let i = index">
-									<th><input type="checkbox" id="{{'checkbox' + i}}" /></th>
-									<th><input type="text" placeholder="date" [(ngModel)]="data.date"/></th>
-									<th><input type="number" id="{{'weight' + i}}" placeholder="poids" [(ngModel)]="data.weight" step="0.01"/></th>
+									<th class="container"><input type="checkbox" id="{{'checkbox' + i}}" /></th>
+									<th class="container" id="{{'container-calendar' + i}}">
+										<div class="flex">
+											<ng2-flatpickr [config]="exampleOptions" class="custom-calendar" id="{{'calendar' + i}}"></ng2-flatpickr>
+											<input type="text" placeholder="date" id="{{'date' + i}}" [(ngModel)]="data.date"/>
+										</div>
+									</th>
+									<th><input type="number" id="{{'weight' + i}}" placeholder="poids" [(ngModel)]="data.value" step="0.01"/></th>
 									<th><input type="number" id="{{'diff' + i}}" placeholder="différence" [(ngModel)]="data.diff" step="0.01" disabled/></th>
 								</tr>
 							</table>
 						</ion-card-content>
+						<div class="center">
+							<button [disabled]="weightUpdate" (click)="saveWeights()">Enregistrer</button>
+						</div>
 
 					</ion-card>
 				</ion-col>
+
 			</ion-row>
 
 		</ion-grid>
