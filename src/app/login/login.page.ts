@@ -19,6 +19,13 @@ export class LoginPage implements OnInit {
   constructor(private router: Router, private auth: AuthService, private data: DataService) {}
 
   ngOnInit() {
+
+		if (localStorage.getItem("uid")) {
+			this.auth.setHeaders();
+			this.data.setHeaders();
+			this.router.navigateByUrl('/home');
+		}
+
 		const signUpButton = document.getElementById('signUp');
 		const signInButton = document.getElementById('signIn');
 		const container = document.getElementById('container');
