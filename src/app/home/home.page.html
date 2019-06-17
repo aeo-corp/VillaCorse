@@ -1,14 +1,133 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>
-      Ionic Blank
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
-  <div class="ion-padding">
-    The world is your oyster.
-    <p>If you get lost, the <a target="_blank" rel="noopener" href="https://ionicframework.com/docs/">docs</a> will be your guide.</p>
-  </div>
+
+	<ion-slides pager #slides (ionSlideWillChange)="changeSlide('img')" (ionSlideReachStart)="isFirstSlide('img')" (ionSlideReachEnd)="isLastSlide('img')">
+		<ion-slide class="dark-background" *ngFor="let img of imgs">
+			<img class="img-slide" src="{{img.path}}" imageViewer/>
+		</ion-slide>
+	</ion-slides>
+
+	<ion-icon name="ios-arrow-dropleft" class="slide-left-selector img-selector" *ngIf="!firstImg" (click)="showPreviousSlide('img')"></ion-icon>
+	<ion-icon name="ios-arrow-dropright" class="slide-right-selector img-selector" *ngIf="!lastImg" (click)="showNextSlide('img')"></ion-icon>
+
+	<ion-grid>
+
+		<div class="container">
+			<ion-row>
+
+				<ion-col size="7" class="left-component">
+					<label>Informations sur la Villa</label>
+
+					<ion-row>
+						<ion-col size="6">
+							<div class="left-component">
+								<h6>Adresse du lieu loué :</h6>
+								<p>Résidences du Golfe de Lava, N°C17, 20167 APPIETTO</p>
+
+								<h6>Type de location :</h6>
+								<p>Rez de jardinet d’une villa divisée en deux appartements indépendants.</p>
+							</div>
+						</ion-col>
+
+						<ion-col size="6">
+							<div>
+								<h6>Surface habitable :</h6>
+								<p>67m² + grande terrasse de 35m² avec barbecue</p>
+
+								<h6>Exposition :</h6>
+								<p>SUD OUEST</p>
+							</div>
+						</ion-col>
+
+						<hr />
+
+						<ion-col size="12">
+							<h6>Situation de la location par rapport aux principaux équipements (gare, aéroport, autoroute, ...) :</h6>
+							<ul>
+								<li *ngFor="let e of situations">
+									{{e.body}}
+								</li>
+							</ul>
+						</ion-col>
+
+						<hr />
+
+						<ion-col size="12">
+							<h6>Détail des pièces :</h6>
+							<ul>
+								<li *ngFor="let e of rooms">
+									{{e.body}}
+								</li>
+							</ul>
+						</ion-col>
+
+					</ion-row>
+
+				</ion-col>
+
+				<ion-col size="5" class="center">
+					<img src="assets/imgs/map.png" class="map">
+				</ion-col>
+
+			</ion-row>
+		</div>
+
+		<div class="container">
+			<ion-row>
+
+				<ion-col size="6" class="left-component padding-right">
+					<ion-slides pager #slides1 (ionSlideWillChange)="changeSlide('plan')" (ionSlideReachStart)="isFirstSlide('plan')" (ionSlideReachEnd)="isLastSlide('plan')">
+						<ion-slide class="dark-background" *ngFor="let plan of plans">
+							<img class="plan-slide" src="{{plan.path}}" imageViewer/>
+						</ion-slide>
+					</ion-slides>
+
+					<ion-icon name="ios-arrow-dropleft" class="slide-left-selector plan-selector" *ngIf="!firstPlan" (click)="showPreviousSlide('plan')"></ion-icon>
+					<ion-icon name="ios-arrow-dropright" class="slide-right-selector plan-selector" *ngIf="!lastPlan" (click)="showNextSlide('plan')"></ion-icon>
+
+				</ion-col>
+
+				<ion-col size="6" class="padding-left">
+					<label>Équipements :</label>
+					<ul>
+						<li *ngFor="let e of equipments">
+							{{e.body}}
+						</li>
+					</ul>
+					<p>Le linge de couchage (Draps, Oreillers) ainsi que le linge de toilette n’est pas fourni. Il n’y a pas de stationnement privatif devant l’appartement, le stationnements des véhicules se fait idéalement sur le parking de la plage à proximité de l’appartement +/- 150 mètres. Pas de téléphone fixe (le portable et la 3G passent bien)</p>
+				</ion-col>
+
+			</ion-row>
+		</div>
+
+		<div class="container">
+			<p>
+				À 19 km au Nord d'Ajaccio, les résidences du Golfe de lava se trouvent dans
+				le petit village de Lava, en bord de	mer aux confins d'une route typique et sinueuse.
+			</p>
+			<p>
+				Pour y parvenir, à partir d'Ajaccio, vous devez prendre la route de Sagone/Cargèse
+				(départementale D81) pendant environ 10 kms puis tourner à gauche en direction du golfe
+				de Lava sur la D381, il ne vous restera plus que 9 kilomètres pour atteindre l’entrée
+				des résidences. Tout de suite en arrivant au Golfe de lava, il faut prendre la deuxième route
+				montante sur votre droite (vous devez laisser sur votre droite une première route très raide en macadam).
+				A	30 mètres vous apercevrez sur votre gauche un panneau «GARDIEN»,
+				vous continuez tout droit environ 100 mètres, l’entrée de l’appartement est située sur votre
+				droite au numéro C17 au pied d’un bel Eucalyptus.
+			</p>
+			<p>
+				En cas de problème vous pouvez soit me contacter au 06 08 06 18 52 ou bien contacter directement Marina
+				(gérante de la supérette UTILE de la résidence) au 06 27 69 66 35.
+			</p>
+		</div>
+
+		<!-- <ion-row class="center">
+			<ion-col size="6">
+				<button class="contact-button">Me Contacter</button>
+			</ion-col>
+			<ion-col size="6">
+				<button class="contact-button">Contacter Marina</button>
+			</ion-col>
+		</ion-row> -->
+
+	</ion-grid>
 </ion-content>
