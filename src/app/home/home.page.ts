@@ -1,109 +1,166 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, ViewChild } from '@angular/core';
 
-import * as $ from 'jquery';
-
-import { Chart } from 'chart.js';
-
-import { DataService } from '../../services/data.service';
+import { Slides } from 'ionic-angular';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.page.html',
-  styleUrls: ['./home.page.scss'],
+  templateUrl: 'home.page.html',
+  styleUrls: ['home.page.scss'],
 })
-export class HomePage implements OnInit {
+export class HomePage {
 
-	weights = [];
+	@ViewChild('slides') slides: Slides;
+	slideOpts: {};
+	firstImg: boolean = true;
+	lastImg: boolean = false;
+	imgNbr: number = 1;
 
-	date = [];
-	weight = [];
-	color = [];
+	@ViewChild('slides1') slides1: Slides;
+	firstPlan: boolean = true;
+	lastPlan: boolean = false;
 
-	monthNames = [ "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Decembre" ];
-	dayNames= [ "Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi" ];
-	newDate = new Date();
+	@ViewChild('slides2') slides2: Slides;
+	firstLocation: boolean = true;
+	lastLocation: boolean = false;
+	location_index: number = 0;
 
-  constructor(private router: Router, private data: DataService) {
+	imgs = [
+		{ path: "assets/imgs/rezDeJardin/5 vue terrasse rez de jardin.jpg" },
+		{ path: "assets/imgs/rezDeJardin/6  terrasse rez de jardin.jpg" },
+		{ path: "assets/imgs/rezDeJardin/6 terrasse cuisine.jpg" },
+	]
+
+	plans = [
+		{ path: "assets/imgs/plan1.png" }
+	]
+
+	situations = [
+		{ body: "Plage: accessible à pieds +/- 130 mètres." },
+		{ body: "Gare maritime : 22km (Ajaccio)." },
+		{ body: "Aéroport: 21km (Ajaccio)." },
+		{ body: "Supermarché: 21km (Géant Casino, Auchan, Leclerc, Decathlon)." },
+		{ body: "Superettes, presse, tabac, glaciers, pizzeria, petits restaurants : 70 mètres." },
+	]
+
+	equipments = [
+		{ body: "Réfrigérateur avec congélateur intégré" },
+		{ body: "plaques électriques" },
+		{ body: "four micro-ondes" },
+		{ body: "four grill" },
+		{ body: "lave vaisselle" },
+		{ body: "lave linge" },
+		{ body: "bouilloire" },
+		{ body: "cafetière électrique" },
+		{ body: "grille pain" },
+	]
+
+	rooms = [
+		{ body: "Une salle de séjour de 16m² (vue mer)" },
+		{ body: "Une cuisine de 12m² (vue mer)" },
+		{ body: "Une chambre «parents» de 12m² avec un lit double. (2 lits simples collés)" },
+		{ body: "Une chambre enfant en mezzanine de 12m² avec 4 lits et lavabo (2 lits gigogne)." },
+		{ body: "Une salle d’eau de 3.5m² avec lavabo et baignoire." },
+		{ body: "Une salle de douche de 2.5m² avec lavabo" },
+		{ body: "Un WC" },
+		{ body: "Une terrasse semi-couverte de 35m² avec barbecue et vue mer." },
+		{ body: "Une douche extérieure" },
+	]
+
+	locations_pics =  [
+		{ path: "assets/imgs/villa1.jpg" },
+		{ path: "assets/imgs/villa2.jpg" },
+		{ path: "assets/imgs/villa1.jpg" },
+	]
+
+	locations =  [
+		{ body: "JetSky", addresse: "12 rue de rivoli, 75000 Paris", phone_number: "+33684355629" },
+		{ body: "Bouée", addresse: "13 rue de rivoli, 75000 Paris", phone_number: "+33684355629" },
+		{ body: "Parachute", addresse: "14 rue de rivoli, 75000 Paris", phone_number: "+33684355629" },
+	]
+
+  constructor() {
+		this.slideOpts = {
+		  initialSlide: 0,
+		  slidesPerView: 1,
+		  autoplay:true
+		};
 	}
 
-  ngOnInit() {
-		this.setCalendar();
-		this.getWeights();
-  }
-
-	account() {
-		this.router.navigateByUrl('/profile');
+	ionViewWillLoad() {
+		console.log("ok");
 	}
 
-	setCalendar() {
-		this.newDate.setDate(this.newDate.getDate());
-		setInterval(() => {
-			var hours = new Date().getHours();
-			$(".hour").html(( hours < 10 ? "0" : "" ) + hours);
-    	var seconds = new Date().getSeconds();
-			$(".second").html(( seconds < 10 ? "0" : "" ) + seconds);
-    	var minutes = new Date().getMinutes();
-			$(".minute").html(( minutes < 10 ? "0" : "" ) + minutes);
-
-	    $(".month span,.month2 span").text(this.monthNames[this.newDate.getMonth()]);
-	    $(".date span,.date2 span").text(this.newDate.getDate());
-	    $(".day span,.day2 span").text(this.dayNames[this.newDate.getDay()]);
-	    $(".year span").html(String(this.newDate.getFullYear()));
-		}, 100);
-	}
-
-	getWeights() {
-		this.data.getWeights()
-							.subscribe(
-								success => {
-									this.weights = success.body;
-									this.setArrays();
-									this.setChart();
-								},
-								error => {
-									console.log(error);
-								}
-							)
-	}
-
-	setArrays() {
-		this.date = new Array();
-		this.weight = new Array();
-		for (let i = 0; i < this.weights.length; i++) {
-			this.date.push(this.weights[i].date)
-			this.weight.push(this.weights[i].value)
-			if (i != 0 && this.weights[i].value > this.weights[i - 1].value)
-				this.color.push('rgba(255, 99, 132, 1)')
-			else
-				this.color.push('rgba(75, 192, 192, 1)')
+	showNextSlide(type) {
+		if (type === "img")
+			this.slides.slideNext();
+		else if (type === "plan")
+			this.slides1.slideNext();
+		else if (type === "location") {
+			this.slides2.slideNext();
 		}
 	}
 
-	setChart() {
-		var canvas = <HTMLCanvasElement> document.getElementById("myChart");
-		var ctx = canvas.getContext("2d");
-		var myChart = new Chart(ctx, {
-				type: 'line',
-				data: {
-						labels: this.date,
-						datasets: [{
-								label: 'poids(kg)',
-								data: this.weight,
-								borderColor: this.color,
-								borderWidth: 1
-						}]
-				},
-				options: {
-						scales: {
-								yAxes: [{
-										ticks: {
-												beginAtZero: true
-										}
-								}]
-						}
-				}
-		});
+	showPreviousSlide(type) {
+		if (type === "img")
+			this.slides.slidePrev();
+		else if (type === "plan")
+			this.slides1.slidePrev();
+		else if (type === "location") {
+			this.slides2.slidePrev();
+			this.location_index -= 2;
+		}
+	}
+
+	isFirstSlide(type) {
+		setTimeout(() => {
+			if (type === "img") {
+				this.firstImg = true;
+				this.lastImg = false;
+			} else if (type === "plan") {
+				this.firstPlan = true;
+				this.lastPlan = false;
+			} else if (type === "location") {
+				this.firstLocation = true;
+				this.lastLocation = false;
+				this.location_index = 0;
+			}
+		}, 100)
+	}
+
+	isLastSlide(type) {
+		setTimeout(() => {
+			if (type === "img") {
+				this.firstImg = false;
+				this.lastImg = true;
+			} else if (type === "plan") {
+				this.firstPlan = false;
+				this.lastPlan = true;
+			} else if (type === "location") {
+				this.firstLocation = false;
+				this.lastLocation = true;
+				this.location_index = this.locations_pics.length - 1;
+			}
+		}, 100)
+	}
+
+	changeSlide(type) {
+		if (type === "img") {
+			this.firstImg = false;
+			this.lastImg = false;
+		} else if (type === "plan") {
+			this.firstPlan = false;
+			this.lastPlan = false;
+		} else if (type === "location") {
+			this.firstLocation = false;
+			this.lastLocation = false;
+			if (this.location_index + 1 < this.locations_pics.length) {
+				this.location_index++;
+			}
+		}
+	}
+
+	contact() {
+		console.log("contact");
 	}
 
 }

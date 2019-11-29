@@ -3,15 +3,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { RouteReuseStrategy } from '@angular/router';
 
-import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { IonicModule, IonicRouteStrategy, Events } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-
-import { AuthService } from '../services/auth.service';
-import { DataService } from '../services/data.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -20,8 +17,6 @@ import { DataService } from '../services/data.service';
   providers: [
     StatusBar,
     SplashScreen,
-		AuthService,
-		DataService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
