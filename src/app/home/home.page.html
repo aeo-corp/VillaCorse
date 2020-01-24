@@ -1,162 +1,3 @@
-<!-- <ion-header class="header">
-	<ul class="header-ul">
-		<li>
-			<a class="link-item">
-				<ion-icon name="md-call" class="header-item"></ion-icon>
-				<span class="contact-info">+33684355629</span>
-			</a>
-		</li>
-		<li>
-			<a class="link-item">
-				<ion-icon name="md-mail" class="header-item"></ion-icon>
-				<span class="contact-info">axel.vandenabeele@gmail.com</span>
-			</a>
-		</li>
-	</ul>
-	<ion-icon name="md-call" class="header-logo"></ion-icon>
-</ion-header>
-
-<ion-content>
-
-	<div class="full-width center-text">
-		<h3 class="title">Rez de jardin</h3>
-		<hr class="small-line"/>
-	</div>
-
-	<ion-grid class="no-padding">
-		<ion-row class="no-padding">
-
-			<ion-col size-sm="12" size-lg="6" class="no-padding">
-				<ion-slides class="slides" pager #slides [options]="slideOpts" (ionSlideWillChange)="changeSlide('img')" (ionSlideReachStart)="isFirstSlide('img')" (ionSlideReachEnd)="isLastSlide('img')">
-					<ion-slide *ngFor="let img of imgs">
-						<img class="img-slide" src="{{img.path}}" imageViewer/>
-					</ion-slide>
-				</ion-slides>
-
-				<ion-icon name="ios-arrow-dropleft" class="slide-left-selector img-selector" *ngIf="!firstImg" (click)="showPreviousSlide('img')"></ion-icon>
-				<ion-icon name="ios-arrow-dropright" class="slide-right-selector img-selector" *ngIf="!lastImg" (click)="showNextSlide('img')"></ion-icon>
-
-			</ion-col>
-
-			<ion-col size-sm="12" size-lg="6">
-				<ion-card class="full-height">
-					<ion-card-title class="card-title">
-						Information sur la Villa
-					</ion-card-title>
-					<ion-card-content>
-						<h6>Adresse du lieu loué :</h6>
-						<p>Résidences du Golfe de Lava, N°C17, 20167 APPIETTO</p>
-
-						<h6>Type de location :</h6>
-						<p>Rez de jardinet d’une villa divisée en deux appartements indépendants.</p>
-
-						<h6>Surface habitable :</h6>
-						<p>67m² + grande terrasse de 35m² avec barbecue</p>
-
-						<h6>Exposition :</h6>
-						<p>SUD OUEST</p>
-					</ion-card-content>
-				</ion-card>
-			</ion-col>
-
-			<ion-col size="12" class="map">
-				Map
-			</ion-col>
-
-			<ion-col size-sm="12" size-lg="6" class="no-padding">
-				<ion-slides class="slides" pager #slides1>
-					<ion-slide *ngFor="let plan of plans">
-						<img class="plan-slide" src="{{plan.path}}" imageViewer/>
-					</ion-slide>
-				</ion-slides>
-			</ion-col>
-
-			<ion-col size-sm="12" size-lg="6">
-				<ion-card class="full-height">
-					<ion-card-title class="card-title">
-						Détail des pièces
-					</ion-card-title>
-					<ion-card-content>
-						<ul>
-							<li *ngFor="let e of rooms">
-								{{e.body}}
-							</li>
-						</ul>
-					</ion-card-content>
-				</ion-card>
-			</ion-col>
-
-			<ion-col size="12">
-				<ion-card class="full-height">
-					<ion-card-title class="card-title">
-						Équipements
-					</ion-card-title>
-					<ion-card-content>
-						<ul>
-							<li *ngFor="let e of equipments">
-								{{e.body}}
-							</li>
-						</ul>
-						<p>Le linge de couchage (Draps, Oreillers) ainsi que le linge de toilette n’est pas fourni. Il n’y a pas de stationnement privatif devant l’appartement, le stationnements des véhicules se fait idéalement sur le parking de la plage à proximité de l’appartement +/- 150 mètres. Pas de téléphone fixe (le portable et la 3G passent bien)</p>
-					</ion-card-content>
-				</ion-card>
-			</ion-col>
-
-			<ion-col size-sm="12" size-lg="6" class="no-padding">
-				<ion-slides class="slides" pager #slides2 [options]="slideOpts" (ionSlideWillChange)="changeSlide('location')" (ionSlideReachStart)="isFirstSlide('location')" (ionSlideReachEnd)="isLastSlide('location')">
-					<ion-slide *ngFor="let location of locations_pics">
-						<img class="img-slide" src="{{location.path}}" imageViewer/>
-					</ion-slide>
-				</ion-slides>
-
-				<ion-icon name="ios-arrow-dropleft" class="slide-left-selector img-selector" *ngIf="!firstLocation" (click)="showPreviousSlide('location')"></ion-icon>
-				<ion-icon name="ios-arrow-dropright" class="slide-right-selector img-selector" *ngIf="!lastLocation" (click)="showNextSlide('location')"></ion-icon>
-
-			</ion-col>
-
-			<ion-col size-sm="12" size-lg="6">
-				<ion-card class="full-height">
-					<ion-card-title class="card-title">
-						Information sur le lieu
-					</ion-card-title>
-					<ion-card-content>
-						<p>{{locations[location_index].body}}</p>
-						<p>{{locations[location_index].addresse}}</p>
-						<p>{{locations[location_index].phone_number}}</p>
-					</ion-card-content>
-				</ion-card>
-			</ion-col>
-
-		</ion-row>
-	</ion-grid>
-
-	<ion-grid>
-
-		<div class="container">
-			<p>
-				À 19 km au Nord d'Ajaccio, les résidences du Golfe de lava se trouvent dans
-				le petit village de Lava, en bord de	mer aux confins d'une route typique et sinueuse.
-			</p>
-			<p>
-				Pour y parvenir, à partir d'Ajaccio, vous devez prendre la route de Sagone/Cargèse
-				(départementale D81) pendant environ 10 kms puis tourner à gauche en direction du golfe
-				de Lava sur la D381, il ne vous restera plus que 9 kilomètres pour atteindre l’entrée
-				des résidences. Tout de suite en arrivant au Golfe de lava, il faut prendre la deuxième route
-				montante sur votre droite (vous devez laisser sur votre droite une première route très raide en macadam).
-				A	30 mètres vous apercevrez sur votre gauche un panneau «GARDIEN»,
-				vous continuez tout droit environ 100 mètres, l’entrée de l’appartement est située sur votre
-				droite au numéro C17 au pied d’un bel Eucalyptus.
-			</p>
-			<p>
-				En cas de problème vous pouvez soit me contacter au 06 08 06 18 52 ou bien contacter directement Marina
-				(gérante de la supérette UTILE de la résidence) au 06 27 69 66 35.
-			</p>
-		</div>
-
-	</ion-grid>
-</ion-content> -->
-
-
 <ion-header>
 	<ion-toolbar class="toolbar">
 		<ion-title>
@@ -164,13 +5,48 @@
 		</ion-title>
 		<ion-buttons slot="end">
 			<ion-button>
-				<ion-icon name="call" (click)="contact()"></ion-icon>
+				<a href="tel:+33608061852">
+					<ion-icon name="call"></ion-icon>
+				</a>
+				<a href="mailto:joe.macquet@sunco.fr">
+					<ion-icon name="mail"></ion-icon>
+				</a>
 			</ion-button>
 		</ion-buttons>
 	</ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content *ngIf="screen_width >= 768">
+
+	<ion-row>
+		<ion-col size="1">
+		</ion-col>
+		<ion-col size="6">
+			<ion-slides class="slides" pager #slides [options]="slideOpts" (ionSlideWillChange)="changeSlide('img')" (ionSlideReachStart)="isFirstSlide('img')" (ionSlideReachEnd)="isLastSlide('img')">
+				<ion-slide class="slide" *ngFor="let img of imgs">
+					<img class="img-slide" src="{{img.path}}" imageViewer/>
+				</ion-slide>
+			</ion-slides>
+
+			<button class="button-slides button-slides-left" *ngIf="!firstImg" (click)="showPreviousSlide('img')">
+				<ion-icon class="button-slides-left-icon" name="arrow-dropleft"></ion-icon>
+			</button>
+			<button class="button-slides button-slides-right" *ngIf="!lastImg" (click)="showNextSlide('img')">
+				<ion-icon class="button-slides-right-icon" name="arrow-dropright"></ion-icon>
+			</button>
+
+			<div class="slide-pic-number">
+				<ion-icon name="camera"></ion-icon>
+				<label>{{imgs.length}}</label>
+			</div>
+		</ion-col>
+		<ion-col size="5">
+		</ion-col>
+	</ion-row>
+
+</ion-content>
+
+<ion-content *ngIf="screen_width < 768">
 
 	<ion-slides class="slides" pager #slides [options]="slideOpts" (ionSlideWillChange)="changeSlide('img')" (ionSlideReachStart)="isFirstSlide('img')" (ionSlideReachEnd)="isLastSlide('img')">
 		<ion-slide class="slide" *ngFor="let img of imgs">
@@ -178,16 +54,144 @@
 		</ion-slide>
 	</ion-slides>
 
-	<button class="button-slides button-slides-left" *ngIf="!firstImg" (click)="showPreviousSlide('img')">
-		<ion-icon class="button-slides-left-icon" name="arrow-dropleft"></ion-icon>
-	</button>
-	<button class="button-slides button-slides-right" *ngIf="!lastImg" (click)="showNextSlide('img')">
-		<ion-icon class="button-slides-right-icon" name="arrow-dropright"></ion-icon>
-	</button>
-
 	<div class="slide-pic-number">
 		<ion-icon name="camera"></ion-icon>
 		<label>{{imgs.length}}</label>
+	</div>
+
+	<div class="center-text">
+		<label class="title">Résidences du Golfe de Lava</label><br />
+		<label class="subtitle">N°C17</label><br />
+		<label class="subtitle">20167 APPIETTO</label><br />
+
+		<ion-row class="section-row">
+			<ion-col size="4">
+				<ion-icon name="qr-scanner" class="red-icon"></ion-icon><br />
+				<label>67m<SUP>2</SUP></label>
+			</ion-col>
+			<ion-col size="4">
+				<ion-icon name="flower" class="red-icon"></ion-icon><br />
+				<label>35m<SUP>2</SUP></label>
+			</ion-col>
+			<ion-col size="4">
+				<ion-icon name="sunny" class="red-icon"></ion-icon><br />
+				<label>Sud Ouest</label>
+			</ion-col>
+		</ion-row>
+
+		<p>Rez de jardin d’une villa divisée en deux appartements indépendants</p>
+	</div>
+
+	<ion-slides class="slides" pager #slides1 [options]="slideOpts" (ionSlideWillChange)="changeSlide('plan')" (ionSlideReachStart)="isFirstSlide('plan')" (ionSlideReachEnd)="isLastSlide('plan')">
+		<ion-slide class="slide" *ngFor="let plan of plans">
+			<img class="img-slide" src="{{plan.path}}" imageViewer/>
+		</ion-slide>
+	</ion-slides>
+
+	<div (click)="onglets.description = !onglets.description" class="center-text">
+		<div [ngClass]="!onglets.description ? 'toggle-menu-close' : 'toggle-menu-open'">
+			<label class="title">Description des pièces</label>
+			<ion-icon name="arrow-down" *ngIf="!onglets.description" class="red-icon big-icon"></ion-icon>
+			<ion-icon name="arrow-up" *ngIf="onglets.description" class="red-icon big-icon"></ion-icon>
+		</div>
+
+		<ul *ngIf="onglets.description">
+
+			<li class="section-list-title title"><label>Séjour / Cuisine</label></li>
+			<li><label>Un séjour vue mer (2 lits simples dans cette pièce).</label></li>
+			<li><label>Une cuisine (vue mer).</label></li>
+
+			<li class="section-list-title title"><label>Chambres</label></li>
+			<li><label>Une chambre «parents» avec un lit double (2 lits simples collés).</label></li>
+			<li><label>Une chambre enfants/Ados type mezzanine avec 3 lits simples et lavabo.</label></li>
+
+			<li class="section-list-title title"><label>Salles d'eau / WC</label></li>
+			<li><label>Une salle d’eau avec lavabo et baignoire.</label></li>
+			<li><label>Une salle de douche avec lavabo.</label></li>
+			<li><label>Un wc.</label></li>
+
+			<li class="section-list-title title"><label>Extérieur</label></li>
+			<li><label>Une terrasse semi couverte vue mer avec barbecue.</label></li>
+			<li><label>Une douche extérieure (très pratique pour le retour de la plage).</label></li>
+		</ul>
+	</div>
+
+	<div (click)="onglets.equipment = !onglets.equipment" class="center-text">
+		<div [ngClass]="!onglets.equipment ? 'toggle-menu-close' : 'toggle-menu-open'">
+			<label class="title">Équipement de la villa</label>
+			<ion-icon name="arrow-down" *ngIf="!onglets.equipment" class="red-icon big-icon"></ion-icon>
+			<ion-icon name="arrow-up" *ngIf="onglets.equipment" class="red-icon big-icon"></ion-icon>
+		</div>
+
+		<ul *ngIf="onglets.equipment">
+
+			<li class="section-list-title title"><label>Électroménager</label></li>
+			<li><label>Réfrigérateur avec congélateur intégré.</label></li>
+			<li><label>Plaques électriques.</label></li>
+			<li><label>Four micro-ondes.</label></li>
+			<li><label>Four grill.</label></li>
+			<li><label>Lave-vaisselle.</label></li>
+			<li><label>Bouilloire.</label></li>
+			<li><label>Cafetière électrique.</label></li>
+			<li><label>Grille pain.</label></li>
+
+			<li class="section-list-title title"><label>Linge</label></li>
+			<li><label>Lave-linge.</label></li><br />
+			<li><label>Le linge de lits (draps et taies d’oreillers) ainsi que le linge de toilette n’est pas fourni.</label></li><br />
+			<li><label>Prévoir pour ce service un supplément de 15€/personne ainsi que 50€ pour les frais de ménage par appartement.</label></li>
+
+			<li class="section-list-title title"><label>Multimédia</label></li>
+			<li><label>Pas de téléphone fixe (la 3G passe bien).</label></li>
+			<li><label>Pas de TV.</label></li>
+
+			<li class="section-list-title title"><label>Stationnement</label></li>
+			<li><label>Il n’y a pas de stationnement privatif devant l’appartement, le stationnement des véhicules se fait idéalement sur le parking de la plage à proximité de l’appartement +/- 150 mètres.</label></li>
+
+		</ul>
+	</div>
+
+	<ion-slides class="slides" pager #slides2 [options]="slideOpts" (ionSlideWillChange)="changeSlide('location')" (ionSlideReachStart)="isFirstSlide('location')" (ionSlideReachEnd)="isLastSlide('location')">
+		<ion-slide class="slide" *ngFor="let location_pic of location_pics">
+			<img class="img-slide" src="{{location_pic.path}}" imageViewer/>
+		</ion-slide>
+	</ion-slides>
+
+	<ul>
+		<li class="section-list-title title"><label>Situation de la villa</label></li>
+		<li><label>Plage : accessible à pieds +/- 130 mètres.</label></li>
+		<li><label>Gare maritime : 22 km (Ajaccio).</label></li>
+		<li><label>Aéroport : 21 km (Ajaccio).</label></li>
+		<li><label>Supermarché : 21 km (Ajaccio), Géant Casino, Auchan, Leclerc, Decathlon...</label></li>
+		<li><label>Superettes, presse, tabac, glaciers, pizzeria, petits restaurants : 70 mètres.</label></li>
+	</ul>
+
+	<div (click)="onglets.location = !onglets.location" class="center-text">
+		<div [ngClass]="!onglets.location ? 'toggle-menu-close' : 'toggle-menu-open'">
+			<label class="title">Pour arriver au Golfe De Lava</label>
+			<ion-icon name="arrow-down" *ngIf="!onglets.location" class="red-icon big-icon"></ion-icon>
+			<ion-icon name="arrow-up" *ngIf="onglets.location" class="red-icon big-icon"></ion-icon>
+		</div>
+
+		<ul *ngIf="onglets.location">
+			<li><label>A 19 km au Nord d'Ajaccio, les résidences du Golfe de lava se trouvent dans le petit village de Lava, en bord de
+mer aux confins d'une route typique et très sinueuse.</label></li><br />
+
+			<li><label>Pour y parvenir, à partir d'Ajaccio, vous devez prendre la route de Sagone/Cargèse (départementale D81)
+pendant environ 10 kms puis tourner à gauche en direction du golfe de Lava (ET NON Paese di Lava) sur la D381,
+il ne vous restera plus que 9 kilomètres pour atteindre l’entrée des résidences.</label></li><br />
+
+			<li><label>Tout de suite en arrivant au Golfe de lava, devez laisser sur votre droite une première route très raide en
+macadam, il faut prendre la deuxième route montante sur votre droite.</label></li>
+			<li><label>Vous continuez tout droit environ 100 mètres, l’entrée de l’appartement est située sur votre droite au numéro
+C17 au pied d’un bel Eucalyptus. C’est une maison avec les volets bleus.</label></li><br />
+
+			<li><label>Pour rappel Il n’y a pas de stationnement privatif devant l’appartement, le Stationnements des véhicules se fait
+idéalement sur le parking de la plage à proximité de l’appartement +/- 150 mètres</label></li><br />
+		</ul>
+	</div>
+
+	<div class="center-text">
+		<label class="title">Bonnes vacances</label>
 	</div>
 
 </ion-content>

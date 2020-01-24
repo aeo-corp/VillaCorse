@@ -1,4 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
+import { Platform } from '@ionic/angular';
 
 import { Slides } from 'ionic-angular';
 
@@ -24,52 +25,50 @@ export class HomePage {
 	lastLocation: boolean = false;
 	location_index: number = 0;
 
+	screen_width: number = 1920;
+
+	onglets = {
+		description: false,
+		equipment: false,
+		location: false
+	}
+
 	imgs = [
 		{ path: "assets/imgs/rezDeJardin/5 vue terrasse rez de jardin.jpg" },
 		{ path: "assets/imgs/rezDeJardin/6  terrasse rez de jardin.jpg" },
 		{ path: "assets/imgs/rezDeJardin/6 terrasse cuisine.jpg" },
+		{ path: "assets/imgs/rezDeJardin/7 terrasse rez de jardin.jpg" },
+		{ path: "assets/imgs/rezDeJardin/7 terrasse séjour.jpg" },
+		{ path: "assets/imgs/rezDeJardin/8 entrée rez de jardin.jpg" },
+		{ path: "assets/imgs/rezDeJardin/8 mini terrasse chambre parents.jpg" },
+		{ path: "assets/imgs/rezDeJardin/8 sejour.jpg" },
+		{ path: "assets/imgs/rezDeJardin/8 terrasse.jpg" },
+		{ path: "assets/imgs/rezDeJardin/9  terrasse .png" },
+		{ path: "assets/imgs/rezDeJardin/9 .png" },
+		{ path: "assets/imgs/rezDeJardin/9 terrasse cuisine.png" },
+		{ path: "assets/imgs/rezDeJardin/10 terrasse commune.jpg" },
+		{ path: "assets/imgs/rezDeJardin/11 terrasse commune.jpg" },
+		{ path: "assets/imgs/rezDeJardin/12 terrasse  commune.jpg" },
+		{ path: "assets/imgs/rezDeJardin/13 terrasse  .jpg" },
+		{ path: "assets/imgs/rezDeJardin/14 cuisine.jpg" },
+		{ path: "assets/imgs/rezDeJardin/15 vue cuisine.jpg" },
+		{ path: "assets/imgs/rezDeJardin/16 couloir.jpg" },
+		{ path: "assets/imgs/rezDeJardin/17 chambre parents .jpg" },
+		{ path: "assets/imgs/rezDeJardin/18 sejour ou chambre parents.jpg" },
+		{ path: "assets/imgs/rezDeJardin/19 sejour ou chambre 2 lits.jpg" },
+		{ path: "assets/imgs/rezDeJardin/20 Acces chambre ado 3 lits.jpg" },
+		{ path: "assets/imgs/rezDeJardin/21 chambre ado 3 lits .jpg" },
+		{ path: "assets/imgs/rezDeJardin/22 salle de bain.jpg" }
 	]
 
 	plans = [
-		{ path: "assets/imgs/plan1.png" }
+		{ path: "assets/imgs/rezDeJardin/5  plan de l'appartement du rez de jardin.png" }
 	]
 
-	situations = [
-		{ body: "Plage: accessible à pieds +/- 130 mètres." },
-		{ body: "Gare maritime : 22km (Ajaccio)." },
-		{ body: "Aéroport: 21km (Ajaccio)." },
-		{ body: "Supermarché: 21km (Géant Casino, Auchan, Leclerc, Decathlon)." },
-		{ body: "Superettes, presse, tabac, glaciers, pizzeria, petits restaurants : 70 mètres." },
-	]
-
-	equipments = [
-		{ body: "Réfrigérateur avec congélateur intégré" },
-		{ body: "plaques électriques" },
-		{ body: "four micro-ondes" },
-		{ body: "four grill" },
-		{ body: "lave vaisselle" },
-		{ body: "lave linge" },
-		{ body: "bouilloire" },
-		{ body: "cafetière électrique" },
-		{ body: "grille pain" },
-	]
-
-	rooms = [
-		{ body: "Une salle de séjour de 16m² (vue mer)" },
-		{ body: "Une cuisine de 12m² (vue mer)" },
-		{ body: "Une chambre «parents» de 12m² avec un lit double. (2 lits simples collés)" },
-		{ body: "Une chambre enfant en mezzanine de 12m² avec 4 lits et lavabo (2 lits gigogne)." },
-		{ body: "Une salle d’eau de 3.5m² avec lavabo et baignoire." },
-		{ body: "Une salle de douche de 2.5m² avec lavabo" },
-		{ body: "Un WC" },
-		{ body: "Une terrasse semi-couverte de 35m² avec barbecue et vue mer." },
-		{ body: "Une douche extérieure" },
-	]
-
-	locations_pics =  [
-		{ path: "assets/imgs/villa1.jpg" },
-		{ path: "assets/imgs/villa2.jpg" },
-		{ path: "assets/imgs/villa1.jpg" },
+	location_pics =  [
+		{ path: "assets/imgs/rezDeJardin/3 situation de la maison 1.png" },
+		{ path: "assets/imgs/rezDeJardin/3 situation de la maison 3.png" },
+		{ path: "assets/imgs/rezDeJardin/4 situation de la maison 2.png" },
 	]
 
 	locations =  [
@@ -78,16 +77,13 @@ export class HomePage {
 		{ body: "Parachute", addresse: "14 rue de rivoli, 75000 Paris", phone_number: "+33684355629" },
 	]
 
-  constructor() {
+  constructor(private platform: Platform) {
 		this.slideOpts = {
 		  initialSlide: 0,
 		  slidesPerView: 1,
 		  autoplay:true
 		};
-	}
-
-	ionViewWillLoad() {
-		console.log("ok");
+		this.screen_width = this.platform.width();
 	}
 
 	showNextSlide(type) {
@@ -95,9 +91,8 @@ export class HomePage {
 			this.slides.slideNext();
 		else if (type === "plan")
 			this.slides1.slideNext();
-		else if (type === "location") {
+		else if (type === "location")
 			this.slides2.slideNext();
-		}
 	}
 
 	showPreviousSlide(type) {
@@ -138,7 +133,7 @@ export class HomePage {
 			} else if (type === "location") {
 				this.firstLocation = false;
 				this.lastLocation = true;
-				this.location_index = this.locations_pics.length - 1;
+				this.location_index = this.location_pics.length - 1;
 			}
 		}, 100)
 	}
@@ -153,14 +148,9 @@ export class HomePage {
 		} else if (type === "location") {
 			this.firstLocation = false;
 			this.lastLocation = false;
-			if (this.location_index + 1 < this.locations_pics.length) {
+			if (this.location_index + 1 < this.location_pics.length)
 				this.location_index++;
-			}
 		}
-	}
-
-	contact() {
-		console.log("contact");
 	}
 
 }
