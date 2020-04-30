@@ -41,7 +41,7 @@
     "express": "^4.17.0",
     "flatpickr": "^4.5.7",
     "ionic-angular": "^3.9.9",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "ng2-flatpickr": "^6.0.2",
     "path": "^0.12.7",
     "rxjs": "~6.5.1",
